@@ -129,3 +129,19 @@ class AddOutcomeSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         outcome = Outcome.objects.create(user=user, **validated_data)
         return outcome
+
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'phone_number', 'username', 'first_name', 'last_name']
+
+    def validate_username(self, value):
+        return value
+
+    def validate_email(self, value):
+        return value
+
+    def validate_phone_number(self, value):
+        return value

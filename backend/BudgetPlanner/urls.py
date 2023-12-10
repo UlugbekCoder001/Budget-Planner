@@ -19,7 +19,7 @@ from django.urls import path
 
 from BudgetPlanner.views import sign_in, sign_up, edit_balance, get_balance, create_category, list_categories, \
     get_category, edit_category, delete_category, list_outcomes, list_outcomes_with_statistics, get_outcome, \
-    add_outcome, edit_outcome, delete_outcome
+    add_outcome, edit_outcome, delete_outcome, update_profile, get_user_data
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -42,4 +42,7 @@ urlpatterns = [
     path('add-outcome/', add_outcome, name='add_outcome'),
     path('edit-outcome/<int:outcome_id>/', edit_outcome, name='edit_outcome'),
     path('delete-outcome/<int:outcome_id>/', delete_outcome, name='delete_outcome'),
+
+    path('update_profile/', update_profile, name='update_profile'),
+    path('get-user-data/', get_user_data, name='get_user_data'),
 ]

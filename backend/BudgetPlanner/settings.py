@@ -60,6 +60,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'BudgetPlanner.urls'
 
+CORS_ALLOW_ALL_ORIGINS = True
+ALLOWED_HOSTS = ['0fc9-195-158-6-37.ngrok-free.app', 'localhost', '127.0.0.1']
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

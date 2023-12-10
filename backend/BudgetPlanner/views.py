@@ -11,7 +11,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .models import Category, Outcome
 from .serializers import SignInSerializer, SignUpSerializer, EditBalanceSerializer, BalanceSerializer, \
-    CategorySerializer, OutcomeSerializer, AddOutcomeSerializer, OutcomeStatisticsSerializer
+    CategorySerializer, OutcomeSerializer, AddOutcomeSerializer, OutcomeStatisticsSerializer, UserProfileSerializer
 
 
 # ! sign in (login)
@@ -129,7 +129,7 @@ def delete_category(request, category_id):
     if request.method == 'DELETE':
         category = Category.objects.get(pk=category_id)
         category.delete()
-        return Response({'message': 'Category deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'message': 'Category deleted successfully'}, status=status.HTTP_200_OK)
 
 # list of outcomes (filter by category, price more than or less than, created_at)
 @api_view(['GET'])
@@ -247,3 +247,35 @@ def delete_outcome(request, outcome_id):
     if request.method == 'DELETE':
         outcome.delete()
         return Response({'message': 'Outcome deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+
+# update user profile
+@api_view(['PATCH'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def update_profile(request):
+    if request.method == 'PATCH':
+        user = request.user
+        serializer = UserProfileSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+
+            user.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# ...
+
+# get user data
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def get_user_data(request):
+    if request.method == 'GET':
+        user = request.user
+        user_data = {
+            'email': user.email,
+            'username': user.username,
+            'phone_number': user.phone_number,
+        }
+        return Response(user_data, status=status.HTTP_200_OK)
